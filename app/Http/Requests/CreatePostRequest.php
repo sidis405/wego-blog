@@ -30,4 +30,13 @@ class CreatePostRequest extends FormRequest
             'category_id' => 'required|integer|exists:categories,id',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'category_id.required' => 'The category is required',
+            'category_id.integer' => 'The category is invalid',
+            'category_id.exists' => 'The category is invalid',
+        ];
+    }
 }

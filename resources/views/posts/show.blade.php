@@ -1,17 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div>
-    <div class="page-header">
-      <h1>Latest posts</h1>
-    </div>
-
-    {{ $posts->links() }}
-
-    @foreach($posts as $post)
         <article class="card" style="margin-bottom: 10px">
             <div class="card-header">
-                <h2><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h2>
+                <h2>{{ $post->title }}</h2>
                 <small>
                     posted by {{ $post->user->name }}
                     on @datetime($post->created_at)
@@ -22,6 +16,9 @@
                 <p>
                     {!! $post->preview !!}
                 </p>
+                <p>
+                    {!! $post->body !!}
+                </p>
             </div>
             <div class="card-footer">
 
@@ -30,8 +27,6 @@
                 </small>
             </div>
         </article>
-    @endforeach
-    {{ $posts->links() }}
 </div>
 
 @stop

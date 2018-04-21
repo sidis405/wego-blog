@@ -14,9 +14,14 @@
 // destroy - /posts/{post} - DELETE - cancella
 
 
-Route::get('/', 'PostsController@index');
+Route::get('/', 'PostsController@index')->name('posts.index');
+
+Route::get('posts/create', 'PostsController@create')->name('posts.create')->middleware('auth');
+Route::get('posts/{post}', 'PostsController@show')->name('posts.show');
+
+Route::post('posts', 'PostsController@store')->name('posts.store')->middleware('auth');
 
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');

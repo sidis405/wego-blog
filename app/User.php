@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public static function createPostFrom(array $postData)
+    {
+        return auth()->user()->posts()->create($postData);
+    }
 }

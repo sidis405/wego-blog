@@ -9,6 +9,11 @@ class Post extends Model
 {
     use SoftDeletes;
 
+    protected $primaryKey = 'slug';
+    public $incrementing = false;
+
+    protected $guarded = [];
+
     protected $casts = [
         'deleted_at' => 'datetime'
     ];
@@ -25,11 +30,29 @@ class Post extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'post_tag', 'tag_id', 'post_id', 'id', 'id');
     }
 
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    //accessors
+    // public function getTitleAttribute($title)
+    // {
+    //     return strtoupper($title);
+    // }
+
+    //mutators
+    public function setTitleAttribute($title)
+    {
+        $this->attributes['title'] = $title;
+        $this->attributes['slug'] = str_slug($title);
+    }
+
+    public function attachTags(array $tags = [])
+    {
+        return $this->fresh()->tags()->sync($tags);
     }
 }

@@ -17,6 +17,11 @@
 Route::get('/', 'PostsController@index')->name('posts.index');
 
 Route::get('posts/create', 'PostsController@create')->name('posts.create')->middleware('auth');
+Route::get('posts/{post}/edit', 'PostsController@edit')->name('posts.edit')->middleware('auth');
+Route::patch('posts/{post}', 'PostsController@update')->name('posts.update')->middleware('auth');
+
+Route::delete('posts/{post}', 'PostsController@destroy')->name('posts.destroy')->middleware('auth');
+
 Route::get('posts/{post}', 'PostsController@show')->name('posts.show');
 
 Route::post('posts', 'PostsController@store')->name('posts.store')->middleware('auth');

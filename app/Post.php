@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -15,7 +16,7 @@ class Post extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'deleted_at' => 'datetime'
+        'deleted_at' => 'datetime',
     ];
 
     public function user()
@@ -39,6 +40,12 @@ class Post extends Model
     }
 
     //accessors
+
+    public function getCoverAttribute($cover)
+    {
+        return ($cover) ? '/storage/' . $cover : url('storage/covers/default_cover.jpg');
+    }
+
     // public function getTitleAttribute($title)
     // {
     //     return strtoupper($title);

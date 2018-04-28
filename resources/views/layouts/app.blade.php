@@ -70,6 +70,7 @@
 
         <main class="py-12">
             <div class="container">
+                @include('layouts.flash')
                 @yield('content')
             </div>
         </main>

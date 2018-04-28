@@ -6,8 +6,8 @@ use App\Tag;
 use App\Post;
 use App\User;
 use App\Category;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostsController extends Controller
 {
@@ -39,20 +39,29 @@ class PostsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CreatePostRequest $request)
     {
-        $post = User::createPostFrom($request->validated());
+        $post = User::createPostFrom(collect($request->validated())->except('cover')->toArray());
         $post->attachTags($request->get('tags'));
 
-        return redirect()->route('posts.show', $post);
+        if ($request->file('cover')) {
+            $post->cover = $request->file('cover')->store('covers', 'public');
+            $post->save();
+        }
+
+        return redirect()->route('posts.show', $post)
+        ->with('status', 'success')
+        ->with('message', 'The post has been saved successfully.');
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
@@ -64,11 +73,17 @@ class PostsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
     {
-        //
+        $this->authorize('update', $post);
+
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('posts.edit')->with(compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -76,21 +91,47 @@ class PostsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $this->authorize('update', $post);
+
+        $post->update(
+            collect($request->validated())->except('cover')->toArray()
+        );
+        $post->attachTags($request->get('tags'));
+
+        if ($request->file('cover')) {
+            $post->cover = $request->file('cover')->store('covers', 'public');
+            $post->save();
+        }
+
+        return redirect()->route('posts.show', $post)
+            ->with('status', 'warning')
+            ->with('message', 'The post has been updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
     {
-        //
+        $this->authorize('delete', $post);
+
+        //rimuovere associazioni a tag
+        $post->attachTags([]);
+
+        //rimuovere il post
+        $post->delete();
+
+        return redirect()->route('posts.index')
+        ->with('status', 'danger')
+        ->with('message', 'The post has been deleted.');
     }
 }

@@ -9,12 +9,24 @@ class Tag extends Model
 {
     use SoftDeletes;
 
+    protected $primaryKey = 'slug';
+    public $incrementing = false;
+
     protected $casts = [
-        'deleted_at' => 'datetime'
+        'deleted_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'url',
     ];
 
     public function posts()
     {
         return $this->belongsToMany(Post::class);
+    }
+
+    public function getUrlAttribute()
+    {
+        return "<a href='" . route('tags.show', $this).  "'>{$this->name}</a>";
     }
 }

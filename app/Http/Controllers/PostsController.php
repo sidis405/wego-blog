@@ -11,6 +11,11 @@ use App\Http\Requests\UpdatePostRequest;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+        // $this->middleware('auth')->only('create', 'store', 'edit', 'update', 'destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +53,7 @@ class PostsController extends Controller
         $post->attachTags($request->get('tags'));
 
         if ($request->file('cover')) {
-            $post->cover = $request->file('cover')->store('covers', 'public');
+            $post->cover = $request->file('cover')->store('public/covers');
             $post->save();
         }
 
@@ -104,7 +109,7 @@ class PostsController extends Controller
         $post->attachTags($request->get('tags'));
 
         if ($request->file('cover')) {
-            $post->cover = $request->file('cover')->store('covers', 'public');
+            $post->cover = $request->file('cover')->store('app/public/covers');
             $post->save();
         }
 

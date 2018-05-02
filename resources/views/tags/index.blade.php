@@ -3,7 +3,7 @@
 @section('content')
 <div>
     <div class="page-header">
-      <h1>Latest posts</h1>
+      <h1>{{ $posts->total() }} posts tagged with #{{ $tag->name }}</h1>
     </div>
 
     {{ $posts->links() }}

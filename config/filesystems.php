@@ -48,12 +48,6 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'covers' => [
-            'driver' => 'local',
-            'root' => public_path('covers'),
-            'visibility' => 'public',
-        ],
-
         'public' => [
             'driver' => 'local',
             'root' => public_path('app/public'),

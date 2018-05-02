@@ -10,7 +10,7 @@
                 <small>
                     posted by {{ $post->user->name }}
                     on @datetime($post->created_at)
-                    in {{ $post->category->name }}
+                    in <a href="{{ route('categories.show', $post->category) }}">{{ $post->category->name }}</a>
                 </small>
                 @include('posts.partials._edit_remove_button')
             </div>
@@ -25,7 +25,7 @@
             <div class="card-footer">
 
                 <small class="pull-right">
-                    Tags: {{ join(', ', $post->tags->pluck('name')->toArray()) }}
+                    Tags: {!! join(', ', $post->tags->pluck('url')->toArray()) !!}
                 </small>
             </div>
         </article>

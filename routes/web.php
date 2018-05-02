@@ -1,8 +1,8 @@
 <?php
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return redirect()->route('posts.index');
+});
 
 // RESOURCE - REST
 // index - /posts - GET - lista tutti i post

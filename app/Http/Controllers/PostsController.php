@@ -129,9 +129,6 @@ class PostsController extends Controller
     {
         $this->authorize('delete', $post);
 
-        //rimuovere associazioni a tag
-        $post->attachTags([]);
-
         //rimuovere il post
         $post->delete();
 

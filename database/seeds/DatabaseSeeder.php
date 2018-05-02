@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        \DB::table('users')->insert(
+            [
+                'name' => 'sid',
+                'email' => 'forge405@gmail.com',
+                'role' => 'admin',
+                'password' => bcrypt(env('INIT_PASSWD')),
+            ]
+        );
+
         //Creare 10 categorie
         $categories = factory(Category::class, 10)->create();
         //Creare 10 utenti

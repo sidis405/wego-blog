@@ -2,16 +2,17 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, HasApiTokens;
 
     protected $casts = [
-        'deleted_at' => 'datetime'
+        'deleted_at' => 'datetime',
     ];
 
     protected $fillable = [

@@ -72,6 +72,12 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
+        $post->load('comments.user', 'category', 'user', 'tags');
+
+        if (request()->wantsJson()) {
+            return $post;
+        }
+
         return view('posts.show')->with(compact('post'));
     }
 

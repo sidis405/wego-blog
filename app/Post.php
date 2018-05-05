@@ -10,8 +10,8 @@ class Post extends Model
 {
     use SoftDeletes;
 
-    protected $primaryKey = 'slug';
-    public $incrementing = false;
+    // protected $primaryKey = 'slug';
+    // public $incrementing = false;
 
     protected $guarded = [];
 
@@ -36,7 +36,7 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable')->oldest();
     }
 
     //accessors

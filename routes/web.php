@@ -4,6 +4,10 @@ Route::get('/', function () {
     return redirect()->route('posts.index');
 });
 
+Route::get('tokens', function () {
+    return view('tokens');
+})->middleware('auth');
+
 // RESOURCE - REST
 // index - /posts - GET - lista tutti i post
 // create - /posts/create - GET - form creazione post
@@ -20,6 +24,9 @@ Route::get('/', function () {
 // Route::get('posts/{post}/edit', 'PostsController@edit')->name('posts.edit')->middleware('auth');
 // Route::patch('posts/{post}', 'PostsController@update')->name('posts.update')->middleware('auth');
 // Route::delete('posts/{post}', 'PostsController@destroy')->name('posts.destroy')->middleware('auth');
+
+//Comments
+Route::post('/posts/{post}/comments', 'PostsCommentsController@store')->name('posts.comment')->middleware('auth');
 
 //POSTS
 Route::resource('posts', 'PostsController');

@@ -6,6 +6,7 @@ use App\Tag;
 use App\Post;
 use App\User;
 use App\Category;
+use App\Events\PostWasUpdated;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 
@@ -112,6 +113,8 @@ class PostsController extends Controller
             $post->cover = $request->file('cover')->store('app/public/covers');
             $post->save();
         }
+
+        event(new PostWasUpdated($post->load('user')));
 
         return redirect()->route('posts.show', $post)
             ->with('status', 'warning')
